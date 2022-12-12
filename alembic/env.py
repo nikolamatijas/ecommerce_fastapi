@@ -8,6 +8,7 @@ from alembic import context
 from ecommerce import config as config_env
 from ecommerce.db import Base
 from ecommerce.user.models import User
+from ecommerce.products.models import Category, Product
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

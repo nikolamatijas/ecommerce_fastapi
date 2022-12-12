@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from ecommerce import db
@@ -36,6 +36,6 @@ async def get_user_by_id(user_id: int, database: Session = Depends(db.get_db)):
     return await services.get_user_by_id(user_id, database)
 
 
-@router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
 async def delete_user_by_id(user_id: int, database: Session = Depends(db.get_db)):
     return await services.delete_user_by_id(user_id, database)
