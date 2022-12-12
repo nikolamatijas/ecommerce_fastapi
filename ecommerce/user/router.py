@@ -1,10 +1,13 @@
-from fastapi import APIRouter, Depends, status, Response, HTTPException
+from typing import List
+
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
+
 from ecommerce import db
 from . import schema
 from . import services
 from . import validator
-
+from .schema import DisplayUser
 
 router = APIRouter(tags=['Users'], prefix='/user')
 
@@ -21,3 +24,18 @@ async def create_user_registration(request: schema.User, database: Session = Dep
 
     new_user = await services.new_user_register(request, database)
     return new_user
+
+
+@router.get('/', response_model=List[DisplayUser])
+async def get_all_user(database: Session = Depends(db.get_db)):
+    return await services.all_users(database)
+
+
+@router.get('/{user_id}', response_model=DisplayUser)
+async def get_user_by_id(user_id: int, database: Session = Depends(db.get_db)):
+    return await services.get_user_by_id(user_id, database)
+
+
+@router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user_by_id(user_id: int, database: Session = Depends(db.get_db)):
+    return await services.delete_user_by_id(user_id, database)
