@@ -29,9 +29,7 @@ async def delete_category_by_id(category_id, database):
 
 
 async def create_new_product(request, database) -> models.Product:
-    new_product = models.Product(name=request.name, quantity=request.quantity,
-                                 description=request.description, price=request.price,
-                                 category_id=request.category_id)
+    new_product = models.Product(**request.dict())
     database.add(new_product)
     database.commit()
     database.refresh(new_product)
